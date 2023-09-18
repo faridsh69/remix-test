@@ -36,13 +36,6 @@ async function createAndLogin(email: string) {
   const parsedCookie = parse(cookieValue);
   // we log it like this so our cypress command can parse it out and set it as
   // the cookie value.
-  console.log(
-    `
-<cookie>
-  ${parsedCookie.__session}
-</cookie>
-  `.trim(),
-  );
 }
 
 createAndLogin(process.argv[2]);

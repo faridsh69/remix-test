@@ -39,8 +39,6 @@ async function seed() {
       userId: user.id,
     },
   });
-
-  console.log(`Database has been seeded. 🌱`);
 }
 
 seed()

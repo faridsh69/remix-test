@@ -4,7 +4,13 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 import { createUser, getUserByEmail } from "~/models/user.server";
@@ -12,9 +18,22 @@ import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const userId = await getUserId(request);
-  if (userId) return redirect("/");
-  return json({});
+  // const userId = await getUserId(request);
+  // if (userId) return redirect("/");
+  return json({
+    posts: [
+      {
+        slug: "my-first-post",
+        title: "My First Post",
+      },
+      {
+        slug: "90s-mixtape",
+        title: "A Mixtape I Made Just For You",
+      },
+    ],
+  });
+
+  // return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -71,6 +90,7 @@ export const meta: MetaFunction = () => [{ title: "Sign Up" }];
 
 export default function Join() {
   const [searchParams] = useSearchParams();
+  const params = useLoaderData<typeof loader>();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
